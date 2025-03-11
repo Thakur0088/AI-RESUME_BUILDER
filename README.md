@@ -1,70 +1,85 @@
-# Getting Started with Create React App
+# My Resume Builder
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a resume builder application that allows users to create and manage their resumes. It includes a server for handling user data and resume uploads, and a client for interacting with the application.
 
-## Available Scripts
+## Prerequisites
 
-In the project directory, you can run:
+Make sure you have the following installed on your machine:
+- Node.js (v14 or higher)
+- npm (v6 or higher)
 
-### `npm start`
+## Installation
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Follow these steps to set up the project:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Clone the Repository
 
-### `npm test`
+```sh
+git clone <repository-url>
+cd my-resume-builder
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Install Server Dependencies
 
-### `npm run build`
+Navigate to the `Server` directory and install the dependencies:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```sh
+cd Server
+npm install
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Install Client Dependencies
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Navigate to the root directory and install the dependencies:
 
-### `npm run eject`
+```sh
+cd ..
+npm install
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Environment Variables
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Create a `.env` file in the `Server` directory and add the following environment variables:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```
+TEXTRAZOR_API_KEY=<your-textrazor-api-key>
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Running the Server
 
-## Learn More
+Navigate to the `Server` directory and start the server:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```sh
+cd Server
+node server.js
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+The server will run at `http://localhost:5000`.
 
-### Code Splitting
+## Running the Client
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Navigate to the root directory and start the client:
 
-### Analyzing the Bundle Size
+```sh
+npm start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+The client will run at `http://localhost:3000`.
 
-### Making a Progressive Web App
+## API Endpoints
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### User Management
 
-### Advanced Configuration
+- **GET /api/users**: Retrieve all users
+- **POST /api/signup**: Register a new user
+- **PUT /api/users/:id**: Update an entire user
+- **PATCH /api/users/:id**: Update specific fields of a user
+- **DELETE /api/users/:id**: Delete a user
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### Resume Upload and Scoring
 
-### Deployment
+- **POST /upload**: Upload a resume and get a score
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## License
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This project is licensed under the MIT License.

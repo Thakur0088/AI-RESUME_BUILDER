@@ -1,0 +1,239 @@
+/* Scope everything to .signin-page */
+.signin-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 90vh;
+  background-color: #f5f5f5;
+}
+
+/* Navbar Styling */
+.signin-page .navbar1 {
+  background-color: rgb(255, 255, 255);
+  width: 100%;
+  height: 50px;
+  position: fixed;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.signin-page .webname1 {
+  margin-left: 20px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.signin-page .large-text1 {
+  font-size: 24px;
+  font-weight: bold;
+  color: rgb(0, 0, 0);
+}
+
+.signin-page .small-text1 {
+  font-size: 14px;
+  color: gray;
+}
+
+/* Container Styling */
+.signin-page .Container1 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: 90px;
+  width: 100%;
+}
+
+.signin-page .centercontent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 500px;
+}
+
+.signin-page .centercontent h1 {
+  font-size: 2rem;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.signin-page .centercontent p {
+  font-size: 1rem;
+  color: #666;
+}
+
+/* Email & Password Input Fields (Side by Side) */
+.signin-page .input-container {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  width: 100%;
+  max-width: 500px;
+}
+
+.signin-page .input-group {
+  flex: 1;
+  text-align: left;
+}
+
+.signin-page .input-group label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.signin-page .input-group input {
+  width: 90%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.signin-page .login-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #0077b5;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 20px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.signin-page .login-btn:hover {
+  background-color: #005f8a;
+}
+
+/* Sign-in Options */
+.signin-page .signinoptions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.signin-page .signinoptions button {
+  width: 220px;
+  height: 50px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.signin-page .signinoptions button:hover {
+  opacity: 0.8;
+}
+
+.signin-page .facebook {
+  background-color: #1877f2;
+}
+
+.signin-page .google {
+  background-color: #db4437;
+}
+
+.signin-page .linkedin {
+  background-color: #0077b5;
+}
+
+.signin-page .email {
+  background-color: #555555;
+}
+
+.signin-page .icon {
+  font-size: 20px;
+}
+
+/* Sign Up Link */
+.signin-page .centercontent a {
+  color: #1877f2;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.signin-page .centercontent a:hover {
+  text-decoration: underline;
+}
+
+/* Modal Styling */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: #0077b5;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.submit-btn:hover {
+  background-color: #005f8a;
+}
