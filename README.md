@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # My Resume Builder
 
 This project is a resume builder application that allows users to create and manage their resumes. It includes a server for handling user data and resume uploads, and a client for interacting with the application.
@@ -83,3 +84,6 @@ The client will run at `http://localhost:3000`.
 ## License
 
 This project is licensed under the MIT License.
+=======
+# AI-RESUME_BUILDER
+>>>>>>> c588cf88fc86a9fc2e0d33ecebe50cf4151c3aae
