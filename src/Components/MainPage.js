@@ -1,7 +1,7 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
 import "./MainPage.css";
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import { Link } from "react-router-dom";
 import resume1 from "../Images/resume1.png";
 import resume2 from "../Images/resume2.png";
 import resume3 from "../Images/resume3.png";
@@ -28,12 +28,28 @@ import resumeExample2 from "../Images/resume-example2.png";
 import editVideo from "../Images/edit-customize_video.mp4";
 import pregenerated from "../Images/pre-generated_video.mp4";
 
-
 const MainPage = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [evaluation, setEvaluation] = useState(null);
-  const fileInputRef = React.useRef(null);
+  const fileInputRef = useRef(null);
+  const containerRef = useRef(null);
+  const navigate = useNavigate(); // Initialize useNavigate
+  const [initial, setInitial] = useState("");
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user?.username) {
+      setInitial(user.username.charAt(0).toUpperCase()); // Get the first letter of the username
+    }
+  }, []);
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user) {
+      navigate("/signin"); // Redirect to login page if not logged in
+    }
+  }, []);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -69,15 +85,11 @@ const MainPage = () => {
       }
 
       const result = await response.json();
-      console.log("Evaluation result:", result); // Log the result for debugging
+      console.log("Evaluation result:", result);
 
-      // Log detailed response for debugging
-      console.log("Detailed response:", JSON.stringify(result, null, 2));
-
-      // Ensure result contains score and feedback
       const evaluationResult = {
         score: result.score || 0,
-        feedback: result.feedback || 'No feedback available',
+        feedback: result.feedback || "No feedback available",
       };
 
       setEvaluation(evaluationResult);
@@ -93,8 +105,24 @@ const MainPage = () => {
     fileInputRef.current.click();
   };
 
+  const scrollLeft = () => {
+    containerRef.current.scrollLeft -= 300;
+  };
 
-  const containerRef = useRef(null);
+  const scrollRight = () => {
+    containerRef.current.scrollLeft += 300;
+  };
+
+  const handleBuildResumeClick = () => {
+    navigate("/user-details"); // Navigate to UserDetails.js route
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("user"); // Clear user data from localStorage
+    setInitial(""); // Reset the avatar
+    navigate("/signin"); // Redirect to the login page
+  };
+
   const reviews = [
     {
       rating: 5,
@@ -182,20 +210,9 @@ const MainPage = () => {
     },
   ];
 
-
-
-
-  // Scroll the container left or right by 300px
-  const scrollLeft = () => {
-    containerRef.current.scrollLeft -= 300;
-  };
-
-  const scrollRight = () => {
-    containerRef.current.scrollLeft += 300;
-  };
-
   return (
     <div className="container">
+      {/* Navbar */}
       <nav className="navbar">
         <div className="nav-icons">
           <p className="webname">
@@ -206,17 +223,46 @@ const MainPage = () => {
           <a href="">Resume Example</a>
           <a href="">Cover Letter</a>
           <a href="">Resources</a>
+
           <div className="navicon2">
-            <Link to="/signin">My Account</Link>
-            <a href=""><button className="resumebtn">Build my resume</button></a>
+            {initial ? (
+              <>
+                <div className="avatar">{initial}</div>
+                <button className="logout-btn" onClick={handleLogout}>
+                  Logout
+                </button>
+                {JSON.parse(localStorage.getItem("user"))?.role === "admin" && (
+                  <button
+                    className="admin-btn"
+                    onClick={() => navigate("/admin-dashboard")}
+                  >
+                    Admin Dashboard
+                  </button>
+                )}
+              </>
+            ) : (
+              <button className="login-btn" onClick={() => navigate("/signin")}>
+                Login
+              </button>
+            )}
           </div>
         </div>
       </nav>
+
+      {/* Main Content */}
       <div className="mainpage">
         <div className="leftsection">
           <h1>The Ultimate Resume Builder</h1>
-          <p className="aboutpara">Build beautiful, recruiter-tested resumes in a few clicks! Our resume builder is powerful and easy to use, with a range of amazing functions. Custom-tailor resumes for any job within minutes. Increase your interview chances and rise above the competition.</p>
-          <button className="createmyresume">Create My Resume</button>
+          <p className="aboutpara">
+            Build beautiful, recruiter-tested resumes in a few clicks! Our resume builder is powerful and easy to use, with a range of amazing functions. Custom-tailor resumes for any job within minutes. Increase your interview chances and rise above the competition.
+          </p>
+
+<button
+  className="createmyresume"
+  onClick={handleBuildResumeClick}
+>
+  Create My Resume
+</button>
         </div>
         <div className="rightsection">
           <div className="templates">
@@ -235,6 +281,7 @@ const MainPage = () => {
           </div>
         </div>
       </div>
+
       <div className="hiring-section above-background">
         <h2>Our candidates have been hired at:</h2>
         <div className="company-logos">
@@ -307,11 +354,14 @@ const MainPage = () => {
             <span className="half-star">★</span>
             <div className="rating-text">
               <strong>4.5 out of 5</strong><br />
-              based on 53,335 reviews on <a href="#" className="trustpilot-link">Trustpilot</a>
+              based on 53,335 reviews by Users
             </div>
           </div>
 
-          <button className="select-template-btn">Select Template</button>
+
+          <Link to="/user-details">
+            <button className="select-template-btn">Select Template</button>
+          </Link>
         </div>
         <div className="resume-carousel">
           <img src={resumeExample1} alt="Resume Example 1" className="resume-example" />
@@ -525,14 +575,6 @@ const MainPage = () => {
         </div>
 
         <div className="footer-bottom">
-          <div className="footer-left">
-            {/* Language Switcher */}
-            <div className="footer-language">
-              <img src="https://flagcdn.com/16x12/us.png" alt="US Flag" />
-              <span>International</span>
-            </div>
-          </div>
-
           <div className="footer-right">
             <p>Copyright 2025 - resume.com</p>
             <p>

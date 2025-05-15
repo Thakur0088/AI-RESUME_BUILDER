@@ -1,82 +1,85 @@
 import React, { useState } from "react";
 import { FaFacebook, FaGoogle, FaLinkedin, FaEnvelope } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Signinup.css";
 
-// Modal Component for Sign Up
-const CreateAccountModal = ({ show, onClose }) => {
+const Signinup = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isOtpSent, setIsOtpSent] = useState(false);
   const [formData, setFormData] = useState({
-    username: "",
+    name: "",
     email: "",
     password: "",
+    otp: "",
   });
+  const [message, setMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState(""); // For popup message
+  const navigate = useNavigate();
 
-  if (!show) return null;
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/api/signup", formData);
-      console.log("Account created:", response.data);
-      alert("Account successfully created!");
-      onClose(); // Close modal on success
+      const response = await axios.post("http://localhost:5000/api/signup-with-otp", {
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+      });
+      setMessage(response.data);
+      setIsOtpSent(true); // Show OTP input after signup
     } catch (error) {
-      console.error("Error creating account:", error);
-      alert("Error creating account. Please try again.");
+      setMessage(error.response?.data || "Error during signup.");
     }
   };
 
-  return (
-    <div className="modal-overlay">
-      <div className="modal-content">
-        <button className="close-btn" onClick={onClose}>X</button>
-        <h2>Create Account</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="input-group">
-            <label>Username</label>
-            <input type="text" name="username" placeholder="Enter your username" required onChange={handleChange} />
-          </div>
-          <div className="input-group">
-            <label>Email</label>
-            <input type="email" name="email" placeholder="Enter your email" required onChange={handleChange} />
-          </div>
-          <div className="input-group">
-            <label>Password</label>
-            <input type="password" name="password" placeholder="Enter your password" required onChange={handleChange} />
-          </div>
-          <button type="submit" className="submit-btn">Create Account</button>
-        </form>
-      </div>
-    </div>
-  );
-};
+  const handleVerifyOtp = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("http://localhost:5000/api/verify-otp", {
+        email: formData.email,
+        otp: formData.otp,
+      });
+      setMessage(""); // Clear any previous messages
+      setSuccessMessage("OTP verified! Account created successfully."); // Show success message
+      setIsModalOpen(false); // Close the modal
+      setIsOtpSent(false); // Reset OTP input
 
-const Signinup = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+      // Hide the success message after 3 seconds
+      setTimeout(() => {
+        setSuccessMessage("");
+      }, 3000);
+    } catch (error) {
+      setMessage(error.response?.data || "Error during OTP verification.");
+    }
+  };
 
   const handleLogin = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/users");
-      const users = response.data;
+      const response = await axios.post("http://localhost:5000/api/login", formData);
 
-      const user = users.find((u) => u.email === email && u.password === password);
+      const { token, user } = response.data; // Assuming the backend sends token and user info
+      if (token && user) {
+        localStorage.setItem("token", token); // Store the token
+        localStorage.setItem("user", JSON.stringify({ username: user.name, role: user.role })); // Store username and role
 
-      if (user) {
-        alert(`${user.username} is successfully logged in!`);
+        // Redirect based on role
+        if (user.role === "admin") {
+          navigate("/admin-dashboard"); // Redirect to admin dashboard
+        } else {
+          navigate("/"); // Redirect to main page
+        }
       } else {
         alert("Invalid email or password.");
       }
     } catch (error) {
-      console.error("Error fetching users:", error);
+      console.error("Error during login:", error);
       alert("There was an error verifying your credentials.");
     }
   };
@@ -103,8 +106,8 @@ const Signinup = () => {
               <label>Email</label>
               <input
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 placeholder="Enter your email"
                 required
               />
@@ -113,8 +116,8 @@ const Signinup = () => {
               <label>Password</label>
               <input
                 type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={formData.password}
+                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                 placeholder="Enter your password"
                 required
               />
@@ -140,13 +143,93 @@ const Signinup = () => {
 
           <p>
             I am not registered yet.{" "}
-            <a href="#" onClick={openModal}>Sign Up</a>
+            <button
+              type="button"
+              onClick={openModal}
+              style={{
+                background: "none",
+                border: "none",
+                color: "blue",
+                textDecoration: "underline",
+                cursor: "pointer",
+              }}
+            >
+              Sign Up
+            </button>
           </p>
         </div>
       </div>
 
       {/* Modal for Create Account */}
-      <CreateAccountModal show={isModalOpen} onClose={closeModal} />
+      <div className="modal-overlay" style={{ display: isModalOpen ? "block" : "none" }}>
+        <div className="modal-content">
+          <button className="close-btn" onClick={closeModal}>X</button>
+          <h2>{isOtpSent ? "Verify OTP" : "Sign Up"}</h2>
+          <form onSubmit={isOtpSent ? handleVerifyOtp : handleSignup}>
+            {!isOtpSent && (
+              <>
+                <div className="input-group">
+                  <label>Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Enter your name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="input-group">
+                  <label>Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="input-group">
+                  <label>Password</label>
+                  <input
+                    type="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+              </>
+            )}
+            {isOtpSent && (
+              <div className="input-group">
+                <label>OTP</label>
+                <input
+                  type="text"
+                  name="otp"
+                  placeholder="Enter the OTP sent to your email"
+                  value={formData.otp}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            )}
+            <button type="submit" className="login-btn">
+              {isOtpSent ? "Verify OTP" : "Sign Up"}
+            </button>
+          </form>
+          {message && <p>{message}</p>}
+        </div>
+      </div>
+
+      {/* Success Popup */}
+      {successMessage && (
+        <div className="success-popup">
+          <p>{successMessage}</p>
+        </div>
+      )}
     </div>
   );
 };

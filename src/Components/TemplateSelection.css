@@ -1,0 +1,117 @@
+/* Progress Bar Styling */
+.step-progress {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+  gap: 0.5rem;
+}
+
+.step {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #ccc;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  z-index: 2;
+}
+
+
+.step.current {
+  background-color: #007bff;
+}
+
+.step.done {
+  background-color: #28a745;
+}
+
+.progress-line {
+  height: 3px;
+  width: 60px;
+  background-color: #ccc;
+  z-index: 1;
+}
+
+.progress-line.done {
+  background-color: #28a745;
+}
+
+
+
+.template-selection-container {
+    padding: 0rem;
+    text-align: center;
+  }
+  
+.carousel {
+  display: flex;
+  gap: 1rem;
+  transition: transform 0.5s ease-in-out;
+ 
+  scrollbar-width: auto;
+ 
+}
+
+.carousel::-webkit-scrollbar {
+  display: hide; /* For Chrome, Safari, and Edge */
+}
+  
+  .template-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 0fr));
+    gap: 2rem;
+    
+  }
+  
+
+  .template-card {
+    flex: 0 0 calc(30.33% - 1rem); /* Show 3 templates at a time */
+    max-width: calc(30.33% - 1rem);
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .template-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0);
+  }
+  
+  .template-card img {
+    width: 90%;
+    height: 90%;
+    
+  }
+
+  .carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 10;
+  }
+  
+  
+.carousel-arrow.left {
+  left: 10px;
+}
+
+.carousel-arrow.right {
+  right: 10px;
+}
+
+.carousel-arrow:hover {
+  background-color: #0056b3;
+}

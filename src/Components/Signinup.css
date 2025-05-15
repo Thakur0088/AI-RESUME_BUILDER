@@ -4,7 +4,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 90vh;
+  min-height: 97.5vh;
   background-color: #f5f5f5;
 }
 
@@ -179,6 +179,7 @@
 .modal-overlay {
   position: fixed;
   top: 0;
+  
   left: 0;
   width: 100%;
   height: 100%;
@@ -190,12 +191,19 @@
 }
 
 .modal-content {
+  top: 30%;
+  left: 33%;
   background-color: white;
   padding: 20px;
   border-radius: 8px;
   width: 400px;
+  max-width: 90%; /* Ensures responsiveness */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   position: relative;
+  
+  flex-direction: column;
+
+ 
 }
 
 .close-btn {
@@ -236,4 +244,20 @@
 
 .submit-btn:hover {
   background-color: #005f8a;
+}
+
+/* Success Popup */
+.success-popup {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color:#005f8a;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  font-size: 16px;
+  font-weight: bold;
 }
